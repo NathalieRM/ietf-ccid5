@@ -1,5 +1,5 @@
-# ietf-multipath-dccp [![Build Status](https://travis-ci.com/markusa/ietf-multipath-dccp.svg?branch=master)](https://travis-ci.com/markusa/ietf-multipath-dccp)
-IETF draft extending the DCCP protocol with multipath capabilities.
+# ietf-ccid5
+IETF draft with the profile for Congestion Control Identifier 5 (CCID 5)
 
 This is work in progress and uses "xml2rfc" v3 vocabulary. Travis has been configured to verify:
 
@@ -7,14 +7,6 @@ This is work in progress and uses "xml2rfc" v3 vocabulary. Travis has been confi
 - the build of the Internet drafts
 
 Please ensure that the CI tests continue to succeed everytime you submit a pull request.
-
-Get latest `.txt` and `.html` view from `markusa/ietf-multipath-dccp` `master`branch
-
-**`.txt`**
-[ietf-multipath-dccp.txt](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc-dev.cgi?url=https://raw.githubusercontent.com/markusa/ietf-multipath-dccp/master/draft-amend-tsvwg-multipath-dccp.mkd&inputtype=kramdown&format=v3ascii) [(Debug)](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc-dev.cgi?url=https://raw.githubusercontent.com/markusa/ietf-multipath-dccp/master/draft-amend-tsvwg-multipath-dccp.mkd&inputtype=kramdown&format=v3ascii&type=toframe)
-
-**`.html`**
-[ietf-multipath-dccp.html](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc-dev.cgi?url=https://raw.githubusercontent.com/markusa/ietf-multipath-dccp/master/draft-amend-tsvwg-multipath-dccp.mkd&inputtype=kramdown&format=v3ascii&mode=html) [(Debug)](https://xml2rfc.tools.ietf.org/cgi-bin/xml2rfc-dev.cgi?url=https://raw.githubusercontent.com/markusa/ietf-multipath-dccp/master/draft-amend-tsvwg-multipath-dccp.mkd&inputtype=kramdown&format=v3ascii&mode=html&type=toframe)
 
 `make` is used to automate the build process and supports:
 
