@@ -169,6 +169,9 @@ potentially disjoint paths.
 # Convention and Notation
 
 # Usage
+CCID 5 congestion control algorithm is aiming at achieving high bandwidth and low latency by the active probe of the link capacity. This helps hosts adjusting their sending rates before a packet loss happens at a buffer on the path. 
+
+
 CCID 2, TCP-like Congestion Control, is appropriate for DCCP flows that would like to receive as much bandwidth as possible over the long term, consistent with the use of end-to-end congestion control and that can tolerate the large sending rate variations characteristic of AIMD congestion control, including halving of the congestion window in response to a congestion event.
 
 Applications that simply need to transfer as much data as possible in as short a time as possible should use CCID 2.  This contrasts with CCID 3, TCP-Friendly Rate Control (TFRC) Congestion Control[CCID 3 PROFILE], which is appropriate for flows that would prefer to minimize abrupt changes in the sending rate.  For example, CCID 2 is recommended over CCID 3 for streaming media applications that buffer a considerable amount of data at the application receiver before playback time, insulating the application somewhat from abrupt changes in the sending rate.  Such applications could easily choose DCCP's CCID 2 over TCP itself, possibly adding some form of selective reliability at the application layer.  CCID 2 is also recommended over CCID 3 for applications where halving the sending rate in response to congestion is not likely to interfere with application-level performance.
