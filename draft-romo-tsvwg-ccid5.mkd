@@ -169,8 +169,21 @@ potentially disjoint paths.
 # Convention and Notation
 
 # Usage
+CCID 2, TCP-like Congestion Control, is appropriate for DCCP flows that would like to receive as much bandwidth as possible over the long term, consistent with the use of end-to-end congestion control and that can tolerate the large sending rate variations characteristic of AIMD congestion control, including halving of the congestion window in response to a congestion event.
+
+Applications that simply need to transfer as much data as possible in as short a time as possible should use CCID 2.  This contrasts with CCID 3, TCP-Friendly Rate Control (TFRC) Congestion Control[CCID 3 PROFILE], which is appropriate for flows that would prefer to minimize abrupt changes in the sending rate.  For example, CCID 2 is recommended over CCID 3 for streaming media applications that buffer a considerable amount of data at the application receiver before playback time, insulating the application somewhat from abrupt changes in the sending rate.  Such applications could easily choose DCCP's CCID 2 over TCP itself, possibly adding some form of selective reliability at the application layer.  CCID 2 is also recommended over CCID 3 for applications where halving the sending rate in response to congestion is not likely to interfere with application-level performance.
+
+An additional advantage of CCID 2 is that its TCP-like congestion control mechanisms are reasonably well-understood, with traffic dynamics quite similar to those of TCP.  While the network research community is still learning about the dynamics of TCP after 15 years of its being the dominant transport protocol in the Internet, some applications might prefer the more well-known dynamics of TCP-like congestion control over that of newer congestion control mechanisms, which haven't yet met the test of widespread Internet deployment.
 
 ## Relation with TCP
+
+The congestion control mechanisms described here closely follow mechanisms standardized by the IETF for use in SACK-based TCP, and we rely partially on existing TCP documentation, such as RFC 793, RFC 2581, RFC 3465, and RFC 3517.  TCP congestion control continues to evolve, but CCID 2 implementations SHOULD wait for explicit updates to CCID 2 rather than track TCP's evolution directly. 
+
+Differences between CCID 2 and straight TCP congestion control include the following:
+ 
+  *  CCID 2 applies congestion control to acknowledgements, a mechanism not currently standardized for use in TCP.
+  *  DCCP is a datagram protocol, so several parameters whose units are specified in bytes in TCP, such as the congestion window cwnd, have units of packets in DCCP.
+  *  As an unreliable protocol, DCCP never retransmits a packet, so congestion control mechanisms that distinguish retransmissions from new packets have been redesigned for the DCCP context.
 
 
 # IANA Considerations
