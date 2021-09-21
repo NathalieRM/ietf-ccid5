@@ -169,24 +169,9 @@ potentially disjoint paths.
 # Convention and Notation
 
 # Usage
-CCID 5 congestion control algorithm is aiming at achieving high bandwidth and low latency by the active probe of the link capacity. This helps hosts adjusting their sending rates before a packet loss happens at a buffer on the path. 
+CCID 5 congestion control algorithm is aiming at achieving a high bandwidth and low latency by the active probe of the end-to-end link capacity. The active probe helps hosts adjusting their sending rates before a packet loss happens at a buffer on the path. As a result, the communication path experiences a consistent and low latency by avoiding unnecessary packet drops at buffers. Therefore, CCID 5 suits applications that are critical to high or instable latencies which include industry robots, autonomous vehicles, real-time multimedia content transmissions and online gaming. .    
 
-
-CCID 2, TCP-like Congestion Control, is appropriate for DCCP flows that would like to receive as much bandwidth as possible over the long term, consistent with the use of end-to-end congestion control and that can tolerate the large sending rate variations characteristic of AIMD congestion control, including halving of the congestion window in response to a congestion event.
-
-Applications that simply need to transfer as much data as possible in as short a time as possible should use CCID 2.  This contrasts with CCID 3, TCP-Friendly Rate Control (TFRC) Congestion Control[CCID 3 PROFILE], which is appropriate for flows that would prefer to minimize abrupt changes in the sending rate.  For example, CCID 2 is recommended over CCID 3 for streaming media applications that buffer a considerable amount of data at the application receiver before playback time, insulating the application somewhat from abrupt changes in the sending rate.  Such applications could easily choose DCCP's CCID 2 over TCP itself, possibly adding some form of selective reliability at the application layer.  CCID 2 is also recommended over CCID 3 for applications where halving the sending rate in response to congestion is not likely to interfere with application-level performance.
-
-An additional advantage of CCID 2 is that its TCP-like congestion control mechanisms are reasonably well-understood, with traffic dynamics quite similar to those of TCP.  While the network research community is still learning about the dynamics of TCP after 15 years of its being the dominant transport protocol in the Internet, some applications might prefer the more well-known dynamics of TCP-like congestion control over that of newer congestion control mechanisms, which haven't yet met the test of widespread Internet deployment.
-
-## Relation with TCP
-
-The congestion control mechanisms described here closely follow mechanisms standardized by the IETF for use in SACK-based TCP, and we rely partially on existing TCP documentation, such as RFC 793, RFC 2581, RFC 3465, and RFC 3517.  TCP congestion control continues to evolve, but CCID 2 implementations SHOULD wait for explicit updates to CCID 2 rather than track TCP's evolution directly. 
-
-Differences between CCID 2 and straight TCP congestion control include the following:
- 
-  *  CCID 2 applies congestion control to acknowledgements, a mechanism not currently standardized for use in TCP.
-  *  DCCP is a datagram protocol, so several parameters whose units are specified in bytes in TCP, such as the congestion window cwnd, have units of packets in DCCP.
-  *  As an unreliable protocol, DCCP never retransmits a packet, so congestion control mechanisms that distinguish retransmissions from new packets have been redesigned for the DCCP context.
+Since CCID 5 effectively avoids unnecessary packet losses, the spiky traffic behavior, that is commonly caused by traditional TCP congestion control mechanisms, is suppressed. This leads to a stable throughput throughout the connection period and thus yields a higher throughput than that with a loss-based congestion control mechanism. 
 
 
 # IANA Considerations
