@@ -167,11 +167,22 @@ potentially disjoint paths.
 # Introduction {#intro}
 
 # Convention and Notation
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119].
+
 
 # Usage
 CCID 5 congestion control algorithm is aiming at achieving a high bandwidth and low latency by the active probe of the end-to-end link capacity. The active probe helps hosts adjusting their sending rates before a packet loss happens at a buffer on the path. As a result, the communication path experiences a consistent and low latency by avoiding unnecessary packet drops at buffers. Therefore, CCID 5 suits applications that are critical to high or instable latencies which include industry robots, autonomous vehicles, real-time multimedia content transmissions and online gaming. .    
 
 Since CCID 5 effectively avoids unnecessary packet losses, the spiky traffic behavior, that is commonly caused by traditional TCP congestion control mechanisms, is suppressed. This leads to a stable throughput throughout the connection period and thus yields a higher throughput than that with a loss-based congestion control mechanism. 
+
+## TCP BBR Congestion Control Algorithm
+The congestion control mechanisms described here closely follow the [[https://datatracker.ietf.org/doc/html/draft-cardwell-iccrg-bbr-congestion-control-00|BBR congestion control algorithm]]
+
+## Multiple-path communications
+
+
+# Congestion Control Algorithm
+
 
 
 # IANA Considerations
