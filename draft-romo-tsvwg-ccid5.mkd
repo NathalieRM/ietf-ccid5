@@ -179,7 +179,7 @@ Since CCID 5 effectively avoids unnecessary packet losses, the spiky traffic beh
 The congestion control mechanisms described here closely follow the [[https://datatracker.ietf.org/doc/html/draft-cardwell-iccrg-bbr-congestion-control-00|BBR congestion control algorithm]]
 
 ## Multiple-path communications
-
+CCID 5 congestion control algrithm is adopted from TCP's BBR congestion control algorithm with a multi-path commnunication use-case in mind. 
 
 # Congestion Control Algorithm
 
