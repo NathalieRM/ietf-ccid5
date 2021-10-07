@@ -29,56 +29,31 @@ author:
   country: Germany
   email: Markus.Amend@telekom.de
  -
-  ins: D. Hugo
-  name: Dirk von Hugo
+  ins: N. Romo
+  name: Nathalie Romo Moreno
   org: Deutsche Telekom
   abbrev: DT
   street: Deutsche-Telekom-Allee 9
   city: Darmstadt
   code: 64295
   country: Germany
-  email: Dirk.von-Hugo@telekom.de
+  email: nathalie.romo-moreno@telekom.de
  -
-  ins: A. Brunstrom
-  name: Anna Brunstrom
-  org: Karlstad University
-  street: Universitetsgatan 2
-  city: Karlstad
-  code: 651 88
-  country: Sweden
+  ins: J. Kim
+  name: Juhoon Kim
+  org: Deutsche Telekom
+  street: Deutsche-Telekom-Allee 9
+  city: Darmstadt
+  code: 64295
+  country: Germany
   email: anna.brunstrom@kau.se
- -
-  ins: A. Kassler
-  name: Andreas Kassler
-  org: Karlstad University
-  street: Universitetsgatan 2
-  city: Karlstad
-  code: 651 88
-  country: Sweden
-  email: andreas.kassler@kau.se
- -
-  ins: V. Rakocevic
-  name: Veselin Rakocevic
-  org: City University of London
-  street: Northampton Square
-  city: London
-  country: United Kingdom
-  email: veselin.rakocevic.1@city.ac.uk
- -
-  ins: S. Johnson
-  name: Stephen Johnson
-  org: BT
-  street: Adastral Park
-  city: Martlesham Heath
-  code: IP5 3RE
-  country: United Kingdom
-  email: stephen.h.johnson@bt.com
   
 informative:
   I-D.amend-tsvwg-multipath-framework-mpdccp:
   I-D.lhwxz-hybrid-access-network-architecture:
   I-D.muley-network-based-bonding-hybrid-access:
   I-D.amend-tsvwg-dccp-udp-header-conversion:
+  I-D.cardwell-iccrg-bbr-congestion-control:
   RFC0793:
   RFC2119:
   RFC3124:
@@ -165,9 +140,13 @@ potentially disjoint paths.
 --- middle
 
 # Introduction {#intro}
+This document contains the profile for Congestion Control Identifier 5, BBR-like Congestion Control, in the Datagram Congestion Control Protocol (DCCP) {{RFC4340}}, DCCP uses Congestion Control Identifiers, or CCIDs, to specify the congestion control mechanism in use on a half-connection.
+
+The BBR-like Congestion Control CCID5 sends data following the guilines and principles of TCP BBR {{I-D.cardwell-iccrg-bbr-congestion-control}}. i.e, it estimates the path characteristics, to later update accordingly the sending data behavior. It achieves an optimal point of opertion by keeping the amount of data in flight at the BDP (Bandwidth Delay Product) level, avoiding the abrubt Bandwidth changes typical of loss based congestion control algorithms.
 
 # Convention and Notation
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC2119].
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in {{RFC2119}}.
+A DCCP half-connection consists of the application data sent by one endpoint and the corresponding acknowledgements sent by the other endpoint. The terms "HC-Sender" and "HC-Receiver" denote the endpoints sending application data and acknowledgements, respectively. Since CCIDs apply at the level of half-connections, we abbreviate HC-Sender to "sender" and HC-Receiver to "receiver" in this document. See {{RFC4340}} for more discussion
 
 
 # Usage
@@ -175,13 +154,22 @@ CCID 5 congestion control algorithm is aiming at achieving a high bandwidth and 
 
 Since CCID 5 effectively avoids unnecessary packet losses, the spiky traffic behavior, that is commonly caused by traditional TCP congestion control mechanisms, is suppressed. This leads to a stable throughput throughout the connection period and thus yields a higher throughput than that with a loss-based congestion control mechanism. 
 
-## TCP BBR Congestion Control Algorithm
-The congestion control mechanisms described here closely follow the [[https://datatracker.ietf.org/doc/html/draft-cardwell-iccrg-bbr-congestion-control-00|BBR congestion control algorithm]]
+## Relationship With TCP BBR
+The congestion control mechanisms described here closely follow the {{I-D.cardwell-iccrg-bbr-congestion-control}}|BBR congestion control algorithm
+
+## Half-Connection Example
+
+
+# Connection Establishment
+
+# Congestion Control on Data Packets
+
+## Response to Idle and Application-Limited Periods
+
+# Acknowledgements
 
 ## Multiple-path communications
 CCID 5 congestion control algrithm is adopted from TCP's BBR congestion control algorithm with a multi-path commnunication use-case in mind. 
-
-# Congestion Control Algorithm
 
 
 
@@ -189,5 +177,5 @@ CCID 5 congestion control algrithm is adopted from TCP's BBR congestion control 
 
 
 
-# Acknowledgments
+# Acknowledgment
 
