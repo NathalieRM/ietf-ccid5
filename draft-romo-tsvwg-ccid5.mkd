@@ -2,7 +2,7 @@
 title: Profile for Datagram Congestion Control Protocol (DCCP) Congestion Control ID 5
 abbrev: CCID5
 docname: draft-romo-tsvwg-ccid5-00
-date: 2021-07-12
+date: 2021-10-14
 cat: exp
 
 ipr: trust200902
@@ -54,6 +54,7 @@ informative:
   I-D.muley-network-based-bonding-hybrid-access:
   I-D.amend-tsvwg-dccp-udp-header-conversion:
   I-D.cardwell-iccrg-bbr-congestion-control:
+  I-D.cheng-iccrg-delivery-rate-estimation:
   RFC0793:
   RFC2119:
   RFC3124:
@@ -61,6 +62,7 @@ informative:
   RFC4043:
   RFC4086:
   RFC4340:
+  RFC4341:
   RFC5595:
   RFC5596:
   RFC5597:
@@ -146,6 +148,7 @@ The BBR-like Congestion Control CCID5 sends data following the guilines and prin
 
 # Convention and Notation
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in {{RFC2119}}.
+
 A DCCP half-connection consists of the application data sent by one endpoint and the corresponding acknowledgements sent by the other endpoint. The terms "HC-Sender" and "HC-Receiver" denote the endpoints sending application data and acknowledgements, respectively. Since CCIDs apply at the level of half-connections, we abbreviate HC-Sender to "sender" and HC-Receiver to "receiver" in this document. See {{RFC4340}} for more discussion
 
 
@@ -160,22 +163,64 @@ The congestion control mechanisms described here closely follow the {{I-D.cardwe
 ## Half-Connection Example
 
 
+## Multiple-path communications
+CCID 5 congestion control algrithm is adopted from TCP's BBR congestion control algorithm with a multi-path commnunication use-case in mind. 
+
 # Connection Establishment
 
 # Congestion Control on Data Packets
+CCID 5 is based on the BBR congestion control mechanisms described in {{I-D.cardwell-iccrg-bbr-congestion-control}}. The subsequent sections, peresent ageneral description of such mechanimss and dicuss the conssiderations to be addressed when used within the DCCP protocol.
+
+
+BBR proposes an algorithm  based on the characterization of the network path made through the estimation of the Bottleneck Bandwidth (BtlBW) and the Round Trip propagation time (RTProp) defined respectively as the maximum delivered rate and minimum RTT seen by the sender. The algorithm aims to acieve an optimal point of operation by fulfilling two conditions
+
+1. The amount of data inflight must be equal to the Bandwidth Delay Product (BDP), guaranteeing that buffers are not being filled and therefore avoiding long delay
+generation
+2. The bottleneck packet arrival must match the BtlBw to ensure its full utilization.
+
+To match those conditiond, the sending data behvir is updated , by using three control variables: Congestion window (which limit the amount of data
+in flight), pacing rate and send quantum (which limits the amount of aggregated packets in case of segmentation offload). The calculation of the control parameters uses as input the estimated values of BtlBW and RTprop along with two dynamic gain factors named pacing_gain and cwnd_gain.
+
+The estimation of the path parameters Rtprop and BtlBw follow the guidellines ans seudo code descirbed in {{I-D.cheng-iccrg-delivery-rate-estimation}}
+
+## State machine
+The way the control parameters are updated is governed by the BBR state machine Illustrated upnext. In the initial Startup state, the sending rate will increase rapidly until the pipe is detected to be full. Afterwards, the data rate will be reduced so any possible queue can be drained, to finally enter into the ProbeBW state, were the amount of data in flight is slightly increased to probe for more possible bandwidth available. From any of these states, the algorithm can jump into the ProbeRTT phase. Here the data inflight is reduced to probe for lower RTTs. Each state defines specific values for two dynamic gains: cwnd_gain and pacing_gain, which will finally be used in the calculation of the aforementioned Dcontrol variables.
+
+                |
+                V
+       +---> Startup  ----+
+       |        |         |
+       |        V         |
+       |      Drain   ----+
+       |        |         |
+       |        V         |
+       +---> ProbeBW -----+
+       |      ^    |      |
+       |      |    |      |
+       |      +----+      |
+       |                  |
+       +---- ProbeRTT <---+
+
+
+
 
 ## Response to Idle and Application-Limited Periods
 
 # Acknowledgements
 
-## Multiple-path communications
-CCID 5 congestion control algrithm is adopted from TCP's BBR congestion control algorithm with a multi-path commnunication use-case in mind. 
+The Ackknowledgement format and its generation mechanism SHOULD follow the same speidifcations established for CCID2{{RFC4341}}. Thus, each Ackknowledgment  MUST contain an ACK vector defined with the format described in {{RFC4340}} section 1.3. And its generation frequency will be controled by the sender by using the ACK ratio feature.
+
+# Discussion
+
+## ProbeRTT phase transitions
+The transition to and from the probeRTT phase MIGHT imply drastical changes of the congestion window, thus the synchronization of the ACK ratio between sender nd recevier SHOULD be handled carefully. When entering this phase at least one Packet MUST be sent with the new value of the ACK ratio before the reduction of the congestion window to 4 packest its executed, otherwise the receiver  MIGHT not e able to send ACK packets preventing the sender from updatng the measurement of the RTProp and BtlBW variables and remaining in this phase longer than required. Followig a similar logic, before leaving the phase and restoring the congestion window value, at least one packet MUST be sent updating the ack ratio value, otherwise the receiver MIGHT not be able to 
+keep the pace to acknowledge the arriving packets, and the missing ACKs MIGHT  trigger a RTO timeout.
+
+
+In addition to the ssynchronization of the ACK ratio, the sender and receiver MUST keep synchronized the Sequence and Acknowledegemt validity windows, as defined in {{RFC4340}} section 7.5. This adds an additional constrait to the BBR algorithm when leaving the ProbeRTT phase, as at least one RTT is necessary for the sender to ensure the synchronization before restoring the congestion window value, causing  again a longer duration of the probeRTT phase. Thus, it might be necessary to consider the posibility of resoring the congestion window even if this synchronization has not yet be confirmed by the arrival of last Acknowledgement sent by the receiver.
+
 
 
 
 # IANA Considerations
-
-
-
-# Acknowledgment
 
