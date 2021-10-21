@@ -150,15 +150,71 @@ A DCCP half-connection consists of the application data sent by one endpoint and
 
 
 # Usage
-CCID 5 congestion control algorithm is aiming at achieving a high bandwidth and low latency by the active probe of the end-to-end link capacity. The active probe helps hosts adjusting their sending rates before a packet loss happens at a buffer on the path. As a result, the communication path experiences a consistent and low latency by avoiding unnecessary packet drops at buffers. Therefore, CCID 5 suits applications that are critical to high or instable latencies which include industry robots, autonomous vehicles, real-time multimedia content transmissions and online gaming. .    
+CCID5 congestion control algorithm is aiming at achieving a high bandwidth and
+low latency by the active probe of the end-to-end link capacity. The active
+probe helps hosts adjusting their sending rates before a packet loss happens at
+a buffer on the path. As a result, the communication path experiences a
+consistent and low latency by avoiding unnecessary packet drops at buffers.
 
-Since CCID 5 effectively avoids unnecessary packet losses, the spiky traffic behavior, that is commonly caused by traditional TCP congestion control mechanisms, is suppressed. This leads to a stable throughput throughout the connection period and thus yields a higher throughput than that with a loss-based congestion control mechanism. 
+Since CCID5 effectively avoids unnecessary packet losses, the spiky traffic
+behavior, that is commonly caused by traditional TCP congestion control
+mechanisms, is suppressed. This leads to a stable throughput throughout the
+connection period and thus yields a higher throughput than that with a
+loss-based congestion control mechanism. 
 
-## Relationship With TCP BBR
-The congestion control mechanisms described here closely follow the {{I-D.cardwell-iccrg-bbr-congestion-control}}|BBR congestion control algorithm
+Therefore, CCID5 suits applications that require consistent low latencies and
+stable high bandwidth. This includes multimedia streaming, online video gaming,
+video conferencing, and latency-sensitive industry applications such as
+industry robots and autonomous vehicles are usage examples of CCID5.
+
+## Relationship with TCP BBR and CCID2
+The CCID5 congestion control mechanism closely follows TCP's
+{{I-D.cardwell-iccrg-bbr-congestion-control}}|BBR congestion control algorithm.
+However, CCID5 must implement several functionalities that are required for the
+congestion control mechanism, but missing in DCCP. The missing feature is the
+packet acknowledgement mechanism that is typically implemented as a part of the
+protocol itself in TCP. However, since DCCP alone does not support the
+ackknowledgement mechanism, the feature and its required parameters must be
+implemented as a part of the congestion control algorithm.
+
+For this purpose, CCID5 implements the format of the ACK packets, the timing of
+their generation, and how they are congestion controlled. CCID5 uses the same
+ACK format as CCID2, including ACK vectors containing the same information that
+can be found in SACK options, and implements the ACK ratio as ACK congestion
+control mechanism.
+
+In addition, the different variables and functions used to track packets in
+flight, packets acknowledged, and their corresponding sending and arrival times
+as well as the function to detect application-limited periods were replicated
+from the CCID2 implementation
+
+## Multiple-path communications
+CCID 5 congestion control algrithm is adopted from TCP's BBR congestion control
+algorithm with a multiple-path commnunication as a representative use-case
+example. Multiple-path communications do not only target at maximizing the link
+capacity, but also aim at improving the availability on critical situations
+such as a link failure. With that regard, MP-DCCP has been proposed. MP-DCCP
+extends capabilities of DCCP into multiple concurrent connections. A study
+[ANRW paper link] has shown that CCID5 improves the overall bandwidth and the
+end-to-end latency compared to loss-based congestion control algorithms in an
+MP-DCCP enabled network. The study has also shown that the latency difference
+among multiple paths has an influence on the overall performance of the
+communication. A smaller gap among available paths leads to a higher
+aggregation performance of the link capacity. CCID5 is designed to provide a
+low and stable latency over each of the available paths and thus has a
+potential to improve the multi-path communication performance. 
+
+To support the multi-path framework, CCID5 provides the information about the
+congestion status and the RTT estimation of the available paths to the
+scheduling and reordering engine of the MP-DCCP.
 
 ## Half-Connection Example
+For the DCCP communication, the involved hosts establish two uni-directional
+connections and each of which is called half connection. Application data and
+acknowledgements are transferred in the opposite directions on the two half
+connections.
 
+__Refer to CCID2????__
 
 # Connection Establishment
 
@@ -168,14 +224,7 @@ The congestion control mechanisms described here closely follow the {{I-D.cardwe
 
 # Acknowledgements
 
-## Multiple-path communications
-CCID 5 congestion control algrithm is adopted from TCP's BBR congestion control algorithm with a multi-path commnunication use-case in mind. 
-
-
-
 # IANA Considerations
-
-
 
 # Acknowledgment
 
