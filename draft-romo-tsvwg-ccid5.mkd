@@ -2,7 +2,7 @@
 title: Profile for Datagram Congestion Control Protocol (DCCP) Congestion Control ID 5
 abbrev: CCID5
 docname: draft-romo-tsvwg-ccid5-00
-date: 2021-10-14
+date: 2021-10-25
 cat: exp
 
 ipr: trust200902
@@ -19,16 +19,6 @@ pi: [toc, sortrefs, symrefs]
 
 author:
  -
-  ins: M. Amend
-  name: Markus Amend
-  org: Deutsche Telekom
-  abbrev: DT
-  street: Deutsche-Telekom-Allee 9
-  city: Darmstadt
-  code: 64295
-  country: Germany
-  email: Markus.Amend@telekom.de
- -
   ins: N. Romo
   name: Nathalie Romo Moreno
   org: Deutsche Telekom
@@ -42,11 +32,22 @@ author:
   ins: J. Kim
   name: Juhoon Kim
   org: Deutsche Telekom
+  abbrev: DT
   street: Deutsche-Telekom-Allee 9
   city: Darmstadt
   code: 64295
   country: Germany
-  email: anna.brunstrom@kau.se
+  email: j.kim@telekom.de
+ -
+  ins: M. Amend
+  name: Markus Amend
+  org: Deutsche Telekom
+  abbrev: DT
+  street: Deutsche-Telekom-Allee 9
+  city: Darmstadt
+  code: 64295
+  country: Germany
+  email: Markus.Amend@telekom.de
   
 informative:
   I-D.amend-tsvwg-multipath-framework-mpdccp:
@@ -212,17 +213,25 @@ congestion status and the RTT estimation of the available paths to the
 scheduling and reordering engine of the MP-DCCP.
 
 ## Half-Connection Example
-For the DCCP communication, the involved hosts establish two uni-directional
-connections and each of which is called half connection. Application data and
-acknowledgements are transferred in the opposite directions on the two half
-connections.
+This example shows the typical progress of a half-connection using CCID 5’s BBR-like Congestion Control, not including connection
+initiation and termination. The example is informative, not normative.
 
-__Refer to CCID2????__
+1. The sender transmits DCCP-Data packets, each one of them idetifed with a sequence number. The sending behavior is governed by two control parameters: congestion window and pacing rate. The congestion window limits the amount of packets in flight and the pacing rate limits the sending rate. 
+
+2. The Acknowledgemwnt mechanism replicates CCID2 specifications. Thus, The sender sends an Ack Ratio feature option specifying the number of data packets to
+be covered by an Ack packet from the receiver and consequently, the receiver sends a DCCP-Ack packet acknowledging the data packets for every Ack Ratio data packets transmitted by the sender.
+
+3. The sender continues sending DCCP-Data packets. Upon receiving DCCP-Ack packets, the sender examines their Ack Vectors to learn about acknowledged and marked or dropped data packets. With the information of the acknowledged packets, it proceeds to estimate round-trip times (as TCP does) and the delivery rate, following the algorithm described in {{I-D.cheng-iccrg-delivery-rate-estimation}}. 
+
+4. The sender uses the round-trip time and delivery rate estimations to calculate the round-trip propagation delay (RTprop) and the bottleneck bandwidth (BtlBw) of the path, following the speciffications in {{I-D.cardwell-iccrg-bbr-congestion-control}} Section 4.1. The RTprop and BtlBw are then used to update the values of the congestion window and pacing rate.
+
+5. As in CCID2, the sender responds to lost or marked DCCP-Ack packets by modifying the Ack Ratio sent to the receiver and acknowledges the receiver’s acknowledgements at least once per congestion window.
 
 ## Multiple-path communications
 CCID 5 congestion control algrithm is adopted from TCP's BBR congestion control algorithm with a multi-path commnunication use-case in mind. 
 
 # Connection Establishment
+The connection establishment is as specified in Section 4 of {{RFC4341}}
 
 # Congestion Control on Data Packets
 CCID 5 is based on the BBR congestion control mechanisms described in {{I-D.cardwell-iccrg-bbr-congestion-control}}. The subsequent sections, peresent ageneral description of such mechanimss and dicuss the conssiderations to be addressed when used within the DCCP protocol.
