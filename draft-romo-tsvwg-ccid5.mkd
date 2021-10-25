@@ -7,10 +7,9 @@ cat: exp
 
 ipr: trust200902
 
-area: transport
-wg: Transport Area Working Group
+area: IRTF
+wg: ICCRG Working Group
 keyword: Internet-Draft
-submissiontype: IETF
 
 coding: us-ascii
 stand_alone: true
@@ -205,13 +204,13 @@ be covered by an Ack packet from the receiver and consequently, the receiver sen
 
 3. The sender continues sending DCCP-Data packets. Upon receiving DCCP-Ack packets, the sender examines their Ack Vectors to learn about acknowledged and marked or dropped data packets. With the information of the acknowledged packets, it proceeds to estimate round-trip times (as TCP does) and the delivery rate, following the algorithm described in {{I-D.cheng-iccrg-delivery-rate-estimation}}. 
 
-4. The sender uses the round-trip time and delivery rate estimations to calculate the round-trip propagation delay (RTprop) and the bottleneck bandwidth (BtlBw) of the path, following the specifications in {{I-D.cardwell-iccrg-bbr-congestion-control}} Section 4.1. The RTprop and BtlBw are then used to update the values of the congestion window and pacing rate.
+4. The sender uses the round-trip time and delivery rate estimations to calculate the round-trip propagation delay (RTprop) and the bottleneck bandwidth (BtlBw) of the path, following the specifications in ({{I-D.cardwell-iccrg-bbr-congestion-control}} Section 4.1) The RTprop and BtlBw are then used to update the values of the congestion window and pacing rate.
 
 5. As in CCID2, the sender responds to lost or marked DCCP-Ack packets by modifying the Ack Ratio sent to the receiver and acknowledges the receiver’s acknowledgements at least once per congestion window.
 
 
 # Connection Establishment
-The connection establishment is as specified in Section 4 of {{RFC4341}}
+The connection establishment is as specified in ({{RFC4341}} Section 4)
 
 # Congestion Control on Data Packets
 CCID 5 is based on the BBR congestion control mechanisms described in {{I-D.cardwell-iccrg-bbr-congestion-control}}. The subsequent sections, present a general description of such mechanisms and discuss the considerations to be addressed when used within the DCCP protocol.
@@ -229,22 +228,25 @@ in flight), pacing rate, and send quantum (which limits the amount of aggregated
 The estimation of the path parameters Rtprop and BtlBw follow the guidelines and pseudo-code described in {{I-D.cheng-iccrg-delivery-rate-estimation}} and {{I-D.cardwell-iccrg-bbr-congestion-control}}
 
 ## State machine
-The way the control parameters are updated is governed by the BBR state machine Illustrated up next. In the initial Startup state, the sending rate will increase rapidly until the pipe is detected to be full. Afterwards, the data rate will be reduced so any possible queue can be drained, to finally enter into the ProbeBW state, where the amount of data in flight is slightly increased to probe for more possible bandwidth available. From any of these states, the algorithm can jump into the ProbeRTT phase. Here the data inflight is reduced to probe for lower RTTs. Each state defines specific values for two dynamic gains: cwnd_gain and pacing_gain, which will finally be used in the calculation of the aforementioned control variables.
+The way the control parameters are updated is governed by the BBR state machine Illustrated in {{ref_bbr_state_machine}}. In the initial Startup state, the sending rate will increase rapidly until the pipe is detected to be full. Afterwards, the data rate will be reduced so any possible queue can be drained, to finally enter into the ProbeBW state, where the amount of data in flight is slightly increased to probe for more possible bandwidth available. From any of these states, the algorithm can jump into the ProbeRTT phase. Here the data inflight is reduced to probe for lower RTTs. Each state defines specific values for two dynamic gains: cwnd_gain and pacing_gain, which will finally be used in the calculation of the aforementioned control variables.
 
-                |
-                V
-       +---> Startup  ----+
-       |        |         |
-       |        V         |
-       |      Drain   ----+
-       |        |         |
-       |        V         |
-       +---> ProbeBW -----+
-       |      ^    |      |
-       |      |    |      |
-       |      +----+      |
-       |                  |
-       +---- ProbeRTT <---+
+~~~~
+                   |
+                   V
+          +---> Startup  ----+
+          |        |         |
+          |        V         |
+          |      Drain   ----+
+          |        |         |
+          |        V         |
+          +---> ProbeBW -----+
+          |      ^    |      |
+          |      |    |      |
+          |      +----+      |
+          |                  |
+          +---- ProbeRTT <---+
+~~~~
+{: #ref_bbr_state_machine title='BBR State machine'}
 
 
 
@@ -252,7 +254,7 @@ The way the control parameters are updated is governed by the BBR state machine 
 ## Response to Idle and Application-Limited Periods
 
 # Acknowledgements
-The Acknowledgement format and its generation mechanism SHOULD follow the same specifications established for CCID2{{RFC4341}}. Thus, each Acknowledgment  MUST contain an ACK vector defined with the format described in {{RFC4340}} section 1.3. And its generation frequency will be controlled by the sender by using the ACK ratio feature.
+The Acknowledgement format and its generation mechanism SHOULD follow the same specifications established for CCID2{{RFC4341}}. Thus, each Acknowledgment  MUST contain an ACK vector defined with the format described in ({{RFC4340}} section 1.3) And its generation frequency will be controlled by the sender by using the ACK ratio feature.
 
 # Discussion
 
@@ -261,7 +263,7 @@ The transition to and from the probeRTT phase MIGHT imply drastic changes of the
 keep the pace to acknowledge the arriving packets, and the missing ACKs MIGHT trigger a RTO timeout.
 
 
-In addition to the synchronization of the ACK ratio, the sender and receiver MUST keep synchronized the Sequence and Acknowledgment validity windows, as defined in {{RFC4340}} section 7.5. This adds an additional constraint to the BBR algorithm when leaving the ProbeRTT phase, as at least one RTT is necessary for the sender to ensure the synchronization before restoring the congestion window value, causing  again a longer duration of the probeRTT phase. Thus, it might be necessary to consider the possibility of restoring the congestion window even if this synchronization has not yet been confirmed by the arrival of the last Acknowledgement sent by the receiver.
+In addition to the synchronization of the ACK ratio, the sender and receiver MUST keep synchronized the Sequence and Acknowledgment validity windows, as defined in ({{RFC4340}} section 7.5) This adds an additional constraint to the BBR algorithm when leaving the ProbeRTT phase, as at least one RTT is necessary for the sender to ensure the synchronization before restoring the congestion window value, causing  again a longer duration of the probeRTT phase. Thus, it might be necessary to consider the possibility of restoring the congestion window even if this synchronization has not yet been confirmed by the arrival of the last Acknowledgement sent by the receiver.
 
 # IANA Considerations
 
