@@ -50,23 +50,11 @@ author:
   
 informative:
   I-D.amend-tsvwg-multipath-framework-mpdccp:
-  I-D.lhwxz-hybrid-access-network-architecture:
-  I-D.muley-network-based-bonding-hybrid-access:
-  I-D.amend-tsvwg-dccp-udp-header-conversion:
   I-D.cardwell-iccrg-bbr-congestion-control:
   I-D.cheng-iccrg-delivery-rate-estimation:
-  RFC0793:
   RFC2119:
-  RFC3124:
-  RFC3711:
-  RFC4043:
-  RFC4086:
   RFC4340:
   RFC4341:
-  RFC5595:
-  RFC5596:
-  RFC5597:
-  RFC5634:
   RFC6773:
   RFC6824:
   RFC6904:
