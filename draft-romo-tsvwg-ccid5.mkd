@@ -1,7 +1,7 @@
 ---
 title: Profile for Datagram Congestion Control Protocol (DCCP) Congestion Control ID 5
 abbrev: CCID5
-docname: draft-romo-tsvwg-ccid5-00
+docname: draft-romo-iccrg-ccid5-00
 date: 2021-10-25
 cat: exp
 
@@ -82,32 +82,26 @@ informative:
     title: Multipath extension for DCCP
     target: https://multipath-dccp.org/
   paper:
-    title: A Framework for Multiaccess Support for Unreliable Internet Traffic using Multipath DCCP
+    title: CCID5 An implementation of the BBR Congestion Control algorithm for DCCP and its impact over multi-path scenarios
     author:
+      -
+         ins: N. Romo Moreno
+         name: Nathalie Romo Moreno
       -
          ins: M. Amend
          name: Markus Amend
       -
-         ins: E. Bogenfeld
-         name: Eckard Bogenfeld
-      -
-         ins: M. Cvjetkovic
-         name: Milan Cvjetkovic
-      -
          ins: V. Rakocevic
          name: Veselin Rakocevic
-      -
-         ins: M. Pieska
-         name: Marcus Pieska
       -
          ins: A. Kassler
          name: Andreas Kassler
       -
          ins: A. Brunstrom
          name: Anna Brunstrom
-    date: '2019-10-14'
+    date: '2021-06-30'
     seriesinfo:
-      DOI: 10.1109/LCN44214.2019.8990746
+      DOI: 10.1145/3472305.3472322
   slide:
     title: MP-DCCP for enabling transfer of UDP/IP traffic over multiple data paths in multi-connectivity networks
     author:
@@ -183,7 +177,7 @@ example. Multiple-path communications do not only target to maximize the link
 capacity, but also are aimed to improve the availability on critical situations
 such as a link failure. With that regard, MP-DCCP has been proposed. MP-DCCP
 extends capabilities of DCCP into multiple concurrent connections. A study
-[ANRW paper link] has shown that CCID5 improves the overall bandwidth and the
+{{paper}} has shown that CCID5 improves the overall bandwidth and the
 end-to-end latency compared to loss-based congestion control algorithms in an
 MP-DCCP enabled network. The study has also shown that the latency difference
 among multiple paths has an influence on the overall performance of the
