@@ -132,11 +132,20 @@ stable high bandwidth. This includes multimedia streaming, online video gaming,
 video conferencing, and latency-sensitive industry applications such as
 industrial robots and autonomous vehicles are usage examples of CCID5.
 
-## Relationship with TCP BBR and CCID2
+## Relationship with TCP BBR
 The CCID5 congestion control mechanism closely follows TCP's
 {{I-D.cardwell-iccrg-bbr-congestion-control}}|BBR congestion control algorithm,
-replicating the functions intended to estimate the path characteristics and to determine the pace and the amount of data to send.
-However, CCID5 must also comply with the DCCP requirements for a CCID profile ({{RFC4340}} Section 10.4) and define how the data is going to be acknowledged. 
+replicating the functions intended to estimate the path characteristics and to
+determine the pace and the amount of data to send. 
+
+Nevertheless, CCID5 should be optimized for the purpose of achieving the best
+possible latency and bandwidth over multiple network paths. For this purpose,
+CCID5 requires an additional interface towards the MP-DCCP framework to expose
+congestion status and RTT estimation.
+
+## Relationship with CCID2
+CCID5 must comply with the DCCP requirements for a CCID profile ({{RFC4340}}
+Section 10.4) and define how the data is going to be acknowledged. 
 
 For this purpose, CCID5 implements the format of the ACK packets, the timing of
 their generation, and how they are congestion controlled. CCID5 uses the same
